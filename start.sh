@@ -1,11 +1,13 @@
 #!/bin/bash
 
-curl ifconfig.me
+curl -sS ifconfig.me
 echo
-curl ifconfig.me
+curl -sS ifconfig.me
+echo
 
 if command -v dotnet >/dev/null 2>&1; then
     echo "dotnet 已安装"
+    sleep 10
     dotnet /app/Cli.dll start accept --token $token 
 else
     echo "dotnet 未安装"   
