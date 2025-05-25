@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if command -v dotnet >/dev/null 2>&1; then
     echo "dotnet 已安装"
     dotnet /app/Cli.dll start accept --token $token 
