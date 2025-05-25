@@ -12,6 +12,7 @@ RUN apt-get update && \
     libicu-dev \
     libcurl4 \
     ca-certificates \
+    htop \
     && rm -rf /var/lib/apt/lists/*
 
 # 安装 .NET 5.0 Runtime（使用官方链接）
