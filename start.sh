@@ -3,12 +3,17 @@
 curl -sS ifconfig.me
 echo
 curl -sS ifconfig.me
-echo
+echo $token
 
 if command -v dotnet >/dev/null 2>&1; then
     echo "dotnet 已安装"
     sleep 10
-    dotnet /app/Cli.dll start accept --token $token 
+    if pgrep "dotnet" > /dev/null; then
+            echo "Cli 已运行"
+    else
+            echo "Cli 未运行"
+            dotnet /app/Cli.dll start accept --token $token 
+    fi
 else
     echo "dotnet 未安装"   
     wget https://builds.dotnet.microsoft.com/dotnet/Runtime/5.0.16/dotnet-runtime-5.0.16-linux-x64.tar.gz -O dotnet-runtime-5.0.16.tar.gz
@@ -18,6 +23,3 @@ else
     export PATH=$DOTNET_ROOT:$PATH
     dotnet /app/Cli.dll start accept --token $token
 fi
-
-
-
