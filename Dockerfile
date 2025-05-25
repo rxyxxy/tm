@@ -10,14 +10,18 @@ RUN apt-get update && \
     curl \
     wget \
     libicu-dev \
+    libcurl4 \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # 安装 .NET 5.0 Runtime（使用官方链接）
 RUN mkdir -p /opt/dotnet && \
     curl -SL https://builds.dotnet.microsoft.com/dotnet/Runtime/5.0.16/dotnet-runtime-5.0.16-linux-x64.tar.gz \
     | tar -xz -C /opt/dotnet
-RUN curl -SL http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
-    | dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+RUN curl -SL http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb -o libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
+&& dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
+rm -f libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+
 
 ENV DOTNET_ROOT=/opt/dotnet
 ENV PATH=$DOTNET_ROOT:$PATH
