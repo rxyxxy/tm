@@ -7,8 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # 安装必要依赖（curl 用于下载 dotnet，libc6 运行依赖）
 RUN apt-get update && \
     apt-get install -y \
-    curl
-    && rm -rf /var/lib/apt/lists/*
+    curl && rm -rf /var/lib/apt/lists/*
 
 # 安装 .NET 5.0 Runtime（使用官方链接）
 RUN mkdir -p /opt/dotnet && \
