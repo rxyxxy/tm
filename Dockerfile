@@ -20,7 +20,7 @@ RUN mkdir -p /opt/dotnet && \
     | tar -xz -C /opt/dotnet
 RUN curl -SL http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb -o libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
 && dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
-rm -f libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+&& rm -f libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
 
 
 ENV DOTNET_ROOT=/opt/dotnet
