@@ -1,5 +1,5 @@
 # 使用 Ubuntu 22.04 作为基础镜像
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # 设置环境变量（防止交互式安装提示）
 ENV DEBIAN_FRONTEND=noninteractive
