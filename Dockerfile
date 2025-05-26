@@ -1,40 +1,31 @@
-# 使用 Ubuntu 22.04 作为基础镜像
-FROM ubuntu:24.04
+# 使用 Alpine 作为基础镜像
+FROM alpine:3.18
 
-# 设置环境变量（防止交互式安装提示）
-ENV DEBIAN_FRONTEND=noninteractive
-
-# 安装必要依赖（curl 用于下载 dotnet，libc6 运行依赖）
-RUN apt-get update && \
-    apt-get install -y \
+# 安装必要依赖（libc6 等是 glibc 的兼容版本）
+RUN apk add --no-cache \
     curl \
-    wget \
-    libicu-dev \
-    libcurl4 \
-    ca-certificates \
-    htop \
-    && rm -rf /var/lib/apt/lists/*
+    icu-libs
 
-# 安装 .NET 5.0 Runtime（使用官方链接）
+# 安装 gcompat 或 glibc 以兼容 .NET 的需求（Alpine 默认使用 musl，不支持 .NET）
+RUN apk add --no-cache gcompat
+
+# 安装 .NET 5.0 Runtime
 RUN mkdir -p /opt/dotnet && \
     curl -SL https://builds.dotnet.microsoft.com/dotnet/Runtime/5.0.16/dotnet-runtime-5.0.16-linux-x64.tar.gz \
     | tar -xz -C /opt/dotnet
-RUN curl -SL http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb -o libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
-&& dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
-&& rm -f libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
 
-
+# 设置环境变量
 ENV DOTNET_ROOT=/opt/dotnet
 ENV PATH=$DOTNET_ROOT:$PATH
 
-# 创建工作目录
+# 设置工作目录
 WORKDIR /app
 
-# 拷贝你的所有文件到容器中
+# 拷贝当前目录文件到容器
 COPY . /app
 
-# 给 start.sh 添加执行权限
+# 添加执行权限
 RUN chmod +x start.sh
 
-# 设置容器启动命令
+# 设置启动命令
 CMD ["./start.sh"]
